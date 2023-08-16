@@ -8,6 +8,7 @@ export const useSendMessage = () => {
   const [botMessages, setBotMessages] = useState<Record<number, MessageType>>({});
   const [messages, setMessages] = useState<any>([]);
   const [stopReader, setStopReader] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const arrayCounter = useRef(0);
 
   const handleStopReader = () => {
@@ -15,6 +16,7 @@ export const useSendMessage = () => {
   };
 
   async function sendMessage(message: string) {
+    setIsLoading(true);
     const currentId = Math.random() * Date.now();
 
     setSelfMessages((prev) => ({
@@ -90,6 +92,8 @@ export const useSendMessage = () => {
         setStopReader(false);
       }
     }
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -128,5 +132,6 @@ export const useSendMessage = () => {
     selfMessages,
     botMessages,
     messages,
+    isLoading,
   };
 };

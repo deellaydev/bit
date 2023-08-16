@@ -4,13 +4,14 @@ import { SendButton } from "../../../shared/ui/SendButton";
 
 interface ChatInputProps {
   onSend: Function;
+  buttonDisable: boolean;
 }
 
-const ChatInput = ({ onSend }: ChatInputProps) => {
+const ChatInput = ({ onSend, buttonDisable }: ChatInputProps) => {
   const [value, setValue] = useState("");
 
   const handleSend = () => {
-    if (!value) {
+    if (!value || buttonDisable) {
       return;
     }
 
@@ -23,7 +24,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
       <Input
         value={value}
         setValue={setValue}
-        sendButton={<SendButton clickAction={handleSend} />}
+        sendButton={<SendButton clickAction={handleSend} disabled={buttonDisable} />}
       />
     </div>
   );
