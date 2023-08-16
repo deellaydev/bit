@@ -15,14 +15,25 @@ export const useSendMessage = () => {
   };
 
   async function sendMessage(message: string) {
+    const currentId = Math.random() * Date.now();
+
     setSelfMessages((prev) => ({
       ...prev,
       [arrayCounter.current]: {
         text: message,
-        id: Date.now(),
+        id: Math.random() * Date.now(),
         isBot: false,
       },
       length: arrayCounter.current + 1,
+    }));
+
+    setBotMessages((prev) => ({
+      ...prev,
+      [arrayCounter.current]: {
+        text: "",
+        id: currentId,
+        isBot: true,
+      },
     }));
 
     const response = await fetch("http://185.46.8.130/api/v1/chat/send-message", {
@@ -44,7 +55,6 @@ export const useSendMessage = () => {
     }
 
     let receivedChunks: string[] = [];
-    const currentId = Date.now();
 
     while (true) {
       const { done, value } = await reader.read();
@@ -99,6 +109,14 @@ export const useSendMessage = () => {
         ...prev,
         [botMessages[arrayCounter.current - 1].id]: {
           ...botMessages[arrayCounter.current - 1],
+        },
+      }));
+    }
+    if (botMessages[arrayCounter.current]?.text === "") {
+      setMessages((prev: any) => ({
+        ...prev,
+        [botMessages[arrayCounter.current].id]: {
+          ...botMessages[arrayCounter.current],
         },
       }));
     }

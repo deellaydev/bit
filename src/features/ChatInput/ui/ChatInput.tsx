@@ -6,20 +6,24 @@ interface ChatInputProps {
   onSend: Function;
 }
 
-const ChatInput = ({onSend}: ChatInputProps) => {
+const ChatInput = ({ onSend }: ChatInputProps) => {
   const [value, setValue] = useState("");
 
   const handleSend = () => {
-    onSend(value)
-    setValue("")
-  }
+    if (!value) {
+      return;
+    }
+
+    onSend(value);
+    setValue("");
+  };
 
   return (
     <div>
       <Input
         value={value}
         setValue={setValue}
-        sendButton={<SendButton clickAction={handleSend}/>}
+        sendButton={<SendButton clickAction={handleSend} />}
       />
     </div>
   );

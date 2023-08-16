@@ -10,6 +10,8 @@ interface ChatBoxProps {
 }
 
 export const ChatBox = ({ messages }: ChatBoxProps) => {
+  // console.log(messages);
+
   return (
     <div className={styles.wrapper}>
       {messages?.map((el) => (

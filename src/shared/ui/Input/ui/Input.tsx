@@ -1,11 +1,12 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import styles from "./Input.module.scss";
+import { SendButton } from "../../SendButton";
 
 interface InputProps {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   placeholder?: string;
-  sendButton?: ReactNode;
+  sendButton?: ReactElement<typeof SendButton>;
 }
 
 export const Input = ({

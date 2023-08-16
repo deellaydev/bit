@@ -7,9 +7,18 @@
   --color-main: #fff;
 
   // Background
-  --bg: center / cover no-repeat url("/public/assets/bg.png");
+  --bg: center / cover no-repeat url("/public/assets/bg.png"),
+    linear-gradient(180deg, rgba(34, 139, 230, 0.01) 0%, rgba(10, 63, 142, 0.01) 100%);
 
   // Input
   --input-box-shadow: 0px 2px 31px 13px #0a3f8e14;
   --input-placeholder-color: #ced0d6;
+  --input-font-family: "Inter", "Times New Roman", serif;
+
+  // Message
+  --message-font-family: "SFPro", "Times New Roman", serif;
+  --self-color: #fff;
+  --self-bg: #007afe;
+  --bot-color: #000;
+  --bot-bg: rgba($color: #2276f5, $alpha: 20%);
 }
