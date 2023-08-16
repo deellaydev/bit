@@ -15,7 +15,7 @@ export const ChatBox = ({ messages }: ChatBoxProps) => {
   return (
     <div className={styles.wrapper}>
       {messages?.map((el) => (
-        <Message text={el.text} isBot={el.isBot} />
+        <Message key={el.id} text={el.text} isBot={el.isBot} />
       ))}
     </div>
   );
