@@ -2,6 +2,7 @@
   align-self: flex-end;
   max-width: 60%;
   font-family: var(--message-font-family);
+  word-break: keep-all;
 
   width: fit-content;
   margin-bottom: 20px;
@@ -9,11 +10,24 @@
 
   color: var(--self-color);
 
-  border-radius: 16px;
+  border-radius: 28px;
 
   background-color: var(--self-bg);
 
   animation: scale-up-right 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+
+  margin-right: 40px;
+  position: relative;
+
+  &::after {
+    content: "";
+    background-image: url("/public/assets/self.png");
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: -50px;
+    top: 0;
+  }
 }
 
 @keyframes scale-up-right {
@@ -37,6 +51,16 @@
   background-color: rgba($color: #2276f5, $alpha: 20%);
 
   animation: none;
+
+  margin-left: 40px;
+
+  &::after {
+    background-image: url("/public/assets/bot.png");
+    width: 40px;
+    height: 40px;
+    left: -50px;
+    top: 0;
+  }
 }
 
 .isLoading {
@@ -52,6 +76,16 @@
     box-shadow: 32px 0 #fff, -32px 0 #fff;
     position: relative;
     animation: flash 0.5s ease-out infinite alternate;
+  }
+
+  &::before {
+    content: "";
+    background-image: url("/public/assets/bot.png");
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: -50px;
+    top: 0;
   }
 }
 
