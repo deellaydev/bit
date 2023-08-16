@@ -1,23 +1,18 @@
-import { useEffect } from "react";
 import { ChatInput } from "../../../features/ChatInput";
 import { Title } from "../../../shared/ui/Title";
 import { useSendMessage } from "../lib/useSendMessage";
 import { ChatBox } from "../../../features/ChatBox/ui/ChatBox";
+import { Button } from "../../../shared/ui/Button/ui/Button";
 
 const ChatBot = () => {
-  const { sendMessage, selfMessages, message } = useSendMessage();
-
-	useEffect(() => {
-		console.log(message)
-	}, [message])
-
+  const { sendMessage, handleStopReader, messages } = useSendMessage();
 
   return (
-    <div style={{width: "800px"}}>
-			<Title>Bot Chat</Title>
-			<ChatBox/>
+    <div style={{ width: "800px", display: "flex", flexDirection: "column", gap: "30px" }}>
+      <Title>Bot Chat</Title>
+      <ChatBox messages={Object.values(messages)} />
       <ChatInput onSend={sendMessage} />
-			{message}
+      <Button clickAction={handleStopReader} text="Stop" />
     </div>
   );
 };

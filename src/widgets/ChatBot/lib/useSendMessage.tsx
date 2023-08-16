@@ -1,56 +1,114 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MessageType } from "../../../features/ChatBox";
 
-const REGEX = /({"status":"[^"]+","value":"?[^"]+"?})/gi
+const REGEX = /({"status":"[^"]+","value":"?[^"]+"?})/gi;
 
 export const useSendMessage = () => {
-  const [selfMessages, setSelfMessages] = useState<string[]>([]);
-  const [responseText, setResponseText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
-	const [responseChunks, setResponseChunks] = useState([]);
-	const [chunks, setChunks] = useState([]);
-  const [isDone, setIsDone] = useState(false);
+  const [selfMessages, setSelfMessages] = useState<Record<number, MessageType>>({});
+  const [botMessages, setBotMessages] = useState<Record<number, MessageType>>({});
+  const [messages, setMessages] = useState<any>([]);
+  const [stopReader, setStopReader] = useState(false);
+  const arrayCounter = useRef(0);
 
-  async function fetchData(message: string) {
+  const handleStopReader = () => {
+    setStopReader(true);
+  };
 
-      const response = await fetch('http://185.46.8.130/api/v1/chat/send-message', {
-        method: 'POST',
-        body: JSON.stringify({message}),
-				headers: {
-					'Content-Type': "application/json"
-				}
-      })
+  async function sendMessage(message: string) {
+    setSelfMessages((prev) => ({
+      ...prev,
+      [arrayCounter.current]: {
+        text: message,
+        id: Date.now(),
+        isBot: false,
+      },
+      length: arrayCounter.current + 1,
+    }));
 
-			if (!response.body) {
-				return;
-			}
+    const response = await fetch("http://185.46.8.130/api/v1/chat/send-message", {
+      method: "POST",
+      body: JSON.stringify({ message }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      const reader = response.body.getReader();
-      let receivedChunks: string[] = [];
+    if (!response.body) {
+      return;
+    }
 
-      while (true) {
-        const { done, value } = await reader.read();
+    const reader = response.body.getReader();
 
-        if (done) {
-          break;
-        } else {
-          const text = new TextDecoder().decode(value);
-					const newChunks = text.match(REGEX) || []
-					for (const smallChunk of newChunks) {
-						const chunk = JSON.parse(smallChunk)
-						if (chunk.value) {
-							receivedChunks = [...receivedChunks, chunk];
-							setMessage((prev) => prev + chunk.value)
-						}
-					}
+    if (!reader) {
+      return;
+    }
+
+    let receivedChunks: string[] = [];
+    const currentId = Date.now();
+
+    while (true) {
+      const { done, value } = await reader.read();
+
+      if (done) {
+        arrayCounter.current++;
+        break;
+      } else {
+        const text = new TextDecoder().decode(value);
+        const newChunks = text.match(REGEX) || [];
+        for (const smallChunk of newChunks) {
+          const chunk = JSON.parse(smallChunk);
+          if (chunk.value) {
+            receivedChunks = [...receivedChunks, chunk];
+            setTimeout(() => {
+              setBotMessages((prev) => ({
+                ...prev,
+                [arrayCounter.current - 1]: {
+                  text: prev?.[arrayCounter.current - 1]?.text
+                    ? prev[arrayCounter.current - 1].text + chunk.value
+                    : chunk.value,
+                  id: currentId,
+                  isBot: true,
+                },
+                length: arrayCounter.current,
+              }));
+            }, 500);
+          }
         }
       }
+      if (stopReader) {
+        reader.cancel();
+        setStopReader(false);
+      }
+    }
   }
 
+  useEffect(() => {
+    if (selfMessages[arrayCounter.current]) {
+      setMessages((prev: any) => ({
+        ...prev,
+        [selfMessages[arrayCounter.current].id]: {
+          ...selfMessages[arrayCounter.current],
+        },
+      }));
+    }
+  }, [selfMessages]);
+
+  useEffect(() => {
+    if (botMessages[arrayCounter.current - 1]) {
+      setMessages((prev: any) => ({
+        ...prev,
+        [botMessages[arrayCounter.current - 1].id]: {
+          ...botMessages[arrayCounter.current - 1],
+        },
+      }));
+    }
+  }, [botMessages]);
+
   return {
-    sendMessage: fetchData,
+    sendMessage,
+    handleStopReader,
     selfMessages,
-    responseText,
-    message,
+    botMessages,
+    messages,
   };
 };
