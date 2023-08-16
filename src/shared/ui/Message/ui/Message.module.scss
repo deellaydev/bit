@@ -1,0 +1,22 @@
+.message {
+	align-self: flex-end;
+
+	width: fit-content;
+	margin-bottom: 20px;
+	padding: 12px 20px;
+
+	color: #fff;
+
+	border-radius: 16px;
+
+	background-color: #007AFE;
+}
+
+.isBot {
+	display: flex;
+	align-self: flex-start;
+
+	color: #000;
+
+	background-color: rgba($color: #2276F5, $alpha: 20%);
+}

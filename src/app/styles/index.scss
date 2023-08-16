@@ -1,0 +1,17 @@
+@import "reset";
+@import "variables/global";
+@import "fonts/fonts";
+
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+
+  color: var(--color-main);
+  font: var(--font-m);
+
+  background: var(--bg);
+}

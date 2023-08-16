@@ -1,0 +1,29 @@
+@font-face {
+  font-weight: 400;
+  font-family: OpenSans;
+  font-style: normal;
+  src: local("OpenSans-Regular"),
+    url("../../public/fonts/OpenSans/OpenSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-weight: 700;
+  font-family: OpenSans;
+  font-style: normal;
+  src: local("OpenSans-Bold"),
+    url("../../public/fonts/OpenSans/OpenSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: SFPro;
+  font-style: normal;
+  src: local("SFPro-Regular"), url("../../public/fonts/SF/SFProText-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: Inter;
+  font-style: normal;
+  src: local("Inter-Regular"), url("../../public/fonts/Inter/Inter-Regular.ttf") format("truetype");
+}

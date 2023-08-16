@@ -1,0 +1,28 @@
+.wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 28px 72px 28px 20px;
+
+  font-size: 20px;
+
+  border-radius: 16px;
+
+  box-shadow: var(--input-box-shadow);
+
+  &::placeholder {
+    color: var(--input-placeholder-color);
+  }
+
+  & + button {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+
+    transform: translateY(-50%);
+  }
+}
